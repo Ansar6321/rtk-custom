@@ -1,28 +1,25 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { LoginRequest, RegisterRequest } from "../models/DTOs";
-import { RootState, store } from "./store";
+import { RootState } from "./store";
 
 const initialState = {
-    isLoggedIn: false
+    token: ''
 };
 
 const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-        login: (state, action: PayloadAction<LoginRequest>) => {
-            console.log('login');
-            state.isLoggedIn = true;
+        login: (state, action: PayloadAction<string>) => {
+            state.token = action.payload;
         },
         logout: (state) => {
-            console.log('logout');
-            state.isLoggedIn = false;
+            state.token = '';
         }
     }
 });
 
 export const { login, logout } = authSlice.actions;
 
-export const authSelector = (state: RootState) => state.auth.isLoggedIn;
+export const authSelector = (state: RootState) => !!state.auth.token;
 
 export default authSlice.reducer;
