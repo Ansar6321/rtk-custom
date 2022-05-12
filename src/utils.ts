@@ -1,7 +1,7 @@
-import { apiBaseUrl } from './config.json';
+import config from './config.json';
 
 export async function makeRequest<ResponseType>(requestOptions: TodoApiRequestOptions): Promise<ResponseType> {
-    const url = new URL(requestOptions.path, apiBaseUrl);
+    const url = new URL(requestOptions.path, config.apiBaseUrl);
     const headers = new Headers();
     if (requestOptions.isApplicationJson) headers.set('Content-Type', 'application/json');
     if (requestOptions.token) headers.set('Authorization', requestOptions.token);
@@ -9,13 +9,14 @@ export async function makeRequest<ResponseType>(requestOptions: TodoApiRequestOp
 
     let request: RequestInit = { headers };
 
-    if (request.body) {
+    if (requestOptions.body) {
         request = {
             ...request,
             body: JSON.stringify(requestOptions.body),
-            method: requestOptions.method?.toUpperCase() || 'GET'
         }
     }
+
+    request = { ...request, method: requestOptions.method?.toUpperCase() || 'GET' };
 
     const response = await fetch(url.toString(), request);
 

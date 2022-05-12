@@ -9,7 +9,7 @@ export const loginAsync = async (request: LoginRequest) => {
         method: 'POST'
     });
 
-    response.token;
+    return response.token;
 }
 
 export const registerAsync = async (request: RegisterRequest) => {
@@ -20,5 +20,15 @@ export const registerAsync = async (request: RegisterRequest) => {
         method: 'POST'
     })
 
-    response.token;
+    return response.token;
+}
+
+export const logOutAsync = async (token: string) => {
+    const response  = await makeRequest({
+        path: '/user/logout',
+        method: 'POST',
+        token
+    });
+
+    return response;
 }
